@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import WeatherForm from './WeatherForm'
 import './Weather.css';
+import { toast } from 'react-toastify';
 
 function Weather() {
     const [cityWeather, setCityWeather] = useState(null);
@@ -18,9 +19,10 @@ function Weather() {
                     console.log(result);
                     setCityWeather(result)
                 });
-
+                toast("Weather data fetched successfully !");
         } catch (e) {
             console.log("Error occured inside getCityData() function");
+            toast("Error while fetch weather data");
         }
         setLoading(false);
     }
