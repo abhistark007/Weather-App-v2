@@ -9,7 +9,7 @@ import { BiArrowToTop, BiArrowToBottom } from 'react-icons/bi'
 
 function Weather() {
     const [cityWeather, setCityWeather] = useState(null);
-    const [cityWeatherForecast, setCityWeatherForecast] = useState([]);
+    const [cityWeatherForecast, setCityWeatherForecast] = useState(null);
     const [cityController, setCityController] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -17,6 +17,9 @@ function Weather() {
         fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityController}&units=metric&cnt=5&appid=0fd12e44a925b9275b943a063058d142`)
             .then((res) => res.json())
             .then((result) => {
+                if(result.list===undefined){
+                    return;
+                }
                 console.log(result.list);
                 setCityWeatherForecast(result.list);
             })
@@ -30,9 +33,10 @@ function Weather() {
                 .then((result) => {
                     if(result.cod==="404"){
                         toast("City Name doesn't exists");
+                        setCityWeather(null);
                         return ;
                     }
-                    console.log(result);
+                    console.log("I AM HERE  ",result);
                     setCityWeather(result)
                     toast("Weather data fetched successfully !");
                 });
@@ -49,7 +53,7 @@ function Weather() {
 
     useEffect(() => {
         let now = setInterval(() => {
-            setDate(new Date().toUTCString())
+            setDate(new Date().toLocaleString())
         }, 1000)
         return () => clearInterval(now);
     }, [])
@@ -87,7 +91,9 @@ function Weather() {
                                     (cityWeather.cod==="404")?(<></>):(<> 
                                         <div className='flex justify-center text-2xl'>{cityWeather.name} , {cityWeather.sys.country}</div>
                                         <div className='flex justify-between items-center mx-10 max-md:flex-col max-md:gap-3'>
-                                            <div className='bg-white rounded-xl'><img src={`https://openweathermap.org/img/wn/${cityWeather.weather[0].icon}@2x.png`} alt='weather' /></div>
+                                            <div className='bg-white rounded-xl flex flex-col'><img src={`https://openweathermap.org/img/wn/${cityWeather.weather[0].icon}@2x.png`} alt='weather' />
+                                            <p className='text-purple-950  uppercase text-center px-2 pb-1'>{cityWeather.weather[0].description}</p>
+                                            </div>
                                             <div className='text-3xl'>{cityWeather.main.temp} °C</div>
                                             <div className='flex flex-col gap-3'>
                                                 <div className='flex  items-center gap-3'>
