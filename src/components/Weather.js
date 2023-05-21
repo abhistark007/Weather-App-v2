@@ -43,8 +43,8 @@ function Weather() {
                     <div class="custom-loader"></div>
                 </div>) :
                     (
-                        (<div className='text-white flex flex-col'>
-                            <div>
+                        (<div className='text-white flex flex-col w-full'>
+                            <div className='wrapper  px-2 py-2 flex justify-center'>
                                 {date}
                             </div>
                             {
