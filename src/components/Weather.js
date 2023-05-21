@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import WeatherForm from './WeatherForm'
 import './Weather.css';
 import { toast } from 'react-toastify';
@@ -26,6 +26,14 @@ function Weather() {
         }
         setLoading(false);
     }
+    const [date,setDate]=useState();
+
+    useEffect(()=>{
+        let now=setInterval(()=>{
+            setDate(new Date().toUTCString())
+        },1000)
+        return ()=>clearInterval(now); 
+    },[])
 
     return (
         <div className='flex flex-col bg-black opacity-90 mt-16 mx-auto w-[70vw] min-h-[90vh] rounded-xl'>
@@ -34,9 +42,16 @@ function Weather() {
                 loading ? (<div className='w-full mx-10 mt-20'>
                     <div class="custom-loader"></div>
                 </div>) :
-                    (cityWeather === null ? (<></>) :
-                        (<div className='text-white'>
-                            <li>{cityWeather.main.temp}</li>
+                    (
+                        (<div className='text-white flex flex-col'>
+                            <div>
+                                {date}
+                            </div>
+                            {
+                                cityWeather === null ? (<></>):
+                                (<li>{cityWeather.main.temp}</li>)
+                            }
+                            
                         </div>))
             }
         </div>
