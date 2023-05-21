@@ -2,6 +2,7 @@ import myMusic from './assets/bgMusic.mp3'
 import bgVideo from './assets/bgVideo2.mp4'
 import './App.css';
 import Weather from './components/Weather';
+import { ToastContainer} from 'react-toastify'
 
 function App() {
   
@@ -20,6 +21,8 @@ function App() {
 
       <Weather/>
 
+
+      <ToastContainer/>
 
     </div>
   );
