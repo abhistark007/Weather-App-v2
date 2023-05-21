@@ -28,11 +28,17 @@ function Weather() {
             fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityController}&units=metric&appid=0fd12e44a925b9275b943a063058d142`)
                 .then((res) => res.json())
                 .then((result) => {
+                    if(result.cod==="404"){
+                        toast("City Name doesn't exists");
+                        return ;
+                    }
                     console.log(result);
                     setCityWeather(result)
+                    toast("Weather data fetched successfully !");
                 });
+                
             getCityForecastData();
-            toast("Weather data fetched successfully !");
+           
         } catch (e) {
             console.log("Error occured inside getCityData() function");
             toast("Error while fetch weather data");
@@ -77,8 +83,8 @@ function Weather() {
                             </div>
 
                             {
-                                cityWeather === null ? (<></>) :
-                                    (<>
+                                ( cityWeather === null ) ? (<></>) :
+                                    (cityWeather.cod==="404")?(<></>):(<> 
                                         <div className='flex justify-center text-2xl'>{cityWeather.name} , {cityWeather.sys.country}</div>
                                         <div className='flex justify-between items-center mx-10 max-md:flex-col max-md:gap-3'>
                                             <div className='bg-white rounded-xl'><img src={`https://openweathermap.org/img/wn/${cityWeather.weather[0].icon}@2x.png`} alt='weather' /></div>
